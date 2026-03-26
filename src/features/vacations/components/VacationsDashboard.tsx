@@ -8,7 +8,7 @@ export const VacationsDashboard = () => {
   return (
     <ScrollView style={styles.container} bounces={false}>
       <HeaderProgress name="Josue Vasquez" progress={0.61} />
-      
+
       <View style={styles.content}>
         <Card style={styles.card}>
           <Card.Content>
@@ -27,6 +27,9 @@ export const VacationsDashboard = () => {
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#F9FCFF' },
+  scrollPadding: {
+    paddingBottom: 100, // Espacio suficiente para que el Navbar no tape nada
+  },
   content: { padding: 20, marginTop: -25 },
   card: { borderRadius: 20, elevation: 3, backgroundColor: 'white' },
   cardTitle: { textAlign: 'center', fontWeight: 'bold', marginBottom: 20, color: '#1E293B' },

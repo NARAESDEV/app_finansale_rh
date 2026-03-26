@@ -1,8 +1,11 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Tabs } from 'expo-router';
 import { Platform, StyleSheet } from 'react-native';
+import { useTheme } from 'react-native-paper';
 
 export default function TabsLayout() {
+  const theme = useTheme();
+
   return (
     <Tabs screenOptions={{
       headerShown: false,
@@ -34,20 +37,22 @@ export default function TabsLayout() {
 
 const styles = StyleSheet.create({
   tabBar: {
-    position: 'absolute',
-    bottom: Platform.OS === 'ios' ? 25 : 15,
-    left: 20,
-    right: 20,
-    height: 65,
-    borderRadius: 20,
+    height: 70,
     backgroundColor: '#FFFFFF',
-    elevation: 8,
-    shadowColor: '#000',
-    shadowOpacity: 0.1,
-    shadowOffset: { width: 0, height: 4 },
-    borderTopWidth: 0,
-    paddingBottom: Platform.OS === 'ios' ? 20 : 10,
+    borderTopWidth: 1,
+    borderTopColor: '#F1F5F9',
+    paddingBottom: Platform.OS === 'ios' ? 25 : 12,
     paddingTop: 10,
+    // Sombra para que resalte
+    elevation: 20, 
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: -4 },
+    shadowOpacity: 0.1,
+    shadowRadius: 10,
   },
-  label: { fontSize: 11, fontWeight: '700' }
+  label: { 
+    fontSize: 12, 
+    fontWeight: '700',
+    marginTop: -5
+  }
 });
