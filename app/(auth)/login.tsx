@@ -33,7 +33,7 @@ export default function LoginScreen() {
             resizeMode="contain" 
           />
           <Text variant="headlineMedium" style={[styles.title, { color: theme.colors.primary }]}>
-            FinanSale HR
+            FinaNSale
           </Text>
           <Text variant="bodyMedium">Gestión de Recursos Humanos</Text>
         </View>
