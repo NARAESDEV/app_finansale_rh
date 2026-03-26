@@ -1,27 +1,38 @@
-import { theme } from '@/src/core/theme/theme';
-import { useAuthStore } from '@/src/features/auth/store/useAuthStore';
-import { Stack, router } from 'expo-router';
-import { useEffect } from 'react';
-import { PaperProvider } from 'react-native-paper';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { Tabs } from 'expo-router';
+import { useTheme } from 'react-native-paper';
 
-export default function RootLayout() {
-  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
-
-  useEffect(() => {
-    // Lógica de redirección básica
-    if (!isAuthenticated) {
-      router.replace('/(auth)/login');
-    } else {
-      router.replace('/(tabs)');
-    }
-  }, [isAuthenticated]);
+export default function TabsLayout() {
+  const theme = useTheme();
 
   return (
-    <PaperProvider theme={theme}>
-      <Stack screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="(auth)/login" />
-        <Stack.Screen name="(tabs)" />
-      </Stack>
-    </PaperProvider>
+    <Tabs screenOptions={{
+      tabBarActiveTintColor: theme.colors.primary,
+      tabBarInactiveTintColor: '#94A3B8',
+      headerShown: false,
+      tabBarStyle: { height: 60, paddingBottom: 10 }
+    }}>
+      <Tabs.Screen
+        name="index"
+        options={{
+          title: 'INICIO',
+          tabBarIcon: ({ color }) => <MaterialCommunityIcons name="home" size={28} color={color} />,
+        }}
+      />
+      <Tabs.Screen
+        name="requests"
+        options={{
+          title: 'SOLICITUDES',
+          tabBarIcon: ({ color }) => <MaterialCommunityIcons name="clipboard-text-clock" size={28} color={color} />,
+        }}
+      />
+      <Tabs.Screen
+        name="history"
+        options={{
+          title: 'HISTORIAL',
+          tabBarIcon: ({ color }) => <MaterialCommunityIcons name="history" size={28} color={color} />,
+        }}
+      />
+    </Tabs>
   );
 }

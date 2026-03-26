@@ -1,68 +1,49 @@
-
-
+import { useRouter } from 'expo-router';
 import React from 'react';
-import { Image, KeyboardAvoidingView, Platform, StyleSheet, View } from 'react-native';
+import { Image, StyleSheet, View } from 'react-native';
 import { Text, useTheme } from 'react-native-paper';
 import { CustomButton } from '../../src/components/ui/CustomButton';
 import { CustomInput } from '../../src/components/ui/CustomInput';
-import { useAuthStore } from '../../src/features/auth/store/useAuthStore';
-
+import { useAuthStore } from '../../src/features/auth/store/useAuthStore'; // Importamos el store
 export default function LoginScreen() {
   const theme = useTheme();
-  const login = useAuthStore((state) => state.login);
+  const login = useAuthStore((state) => state.login); // Obtenemos la función login
+const router = useRouter();
 
-  const handleLogin = () => {
-    // Simulamos respuesta exitosa del backend
-    login({
-      id: '1',
-      nombre: 'Josue Vasquez',
-      puesto: 'Senior Mobile Developer'
-    });
+const handleLogin = () => {
+    // 1. Cambiamos el estado global
+    login(); 
+    
+    // 2. Navegamos inmediatamente a los tabs
+    // Usamos replace para que el usuario no pueda "volver" al login con el botón de atrás
+    router.replace('/(tabs)'); 
   };
-
   return (
-    <KeyboardAvoidingView 
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      style={[styles.container, { backgroundColor: theme.colors.background }]}
-    >
+    <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
       <View style={styles.content}>
         <View style={styles.header}>
-          <Image 
-            source={require('../../assets/images/logo.png')} 
-            style={styles.logo} 
-            resizeMode="contain" 
-          />
-          <Text variant="headlineMedium" style={[styles.title, { color: theme.colors.primary }]}>
-            FinaNSale
+          <Image source={require('../../assets/images/logo.png')} style={styles.logo} />
+          <Text variant="headlineMedium" style={{ fontWeight: 'bold', color: theme.colors.primary }}>
+            FinanSale HR
           </Text>
-          <Text variant="bodyMedium">Gestión de Recursos Humanos</Text>
         </View>
 
-        <View style={styles.form}>
-          <CustomInput label="Correo electrónico" keyboardType="email-address" />
-          <CustomInput label="Contraseña" secureTextEntry />
-          
-          <CustomButton 
-            title="Entrar" 
-            onPress={handleLogin} 
-            color={theme.colors.primary} 
-          />
-        </View>
+        <CustomInput label="Correo electrónico" />
+        <CustomInput label="Contraseña" secureTextEntry />
+        
+        <CustomButton 
+          title="Entrar" 
+          onPress={handleLogin}
+          color={theme.colors.primary} 
+        />
       </View>
-    </KeyboardAvoidingView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1 },
-  content: { flex: 1, justifyContent: 'center', padding: 24 },
+  container: { flex: 1, justifyContent: 'center' },
+  content: { padding: 25 },
   header: { alignItems: 'center', marginBottom: 40 },
-  logo: { width: 120, height: 120, marginBottom: 16 },
-  title: { fontWeight: '900' },
-  form: { width: '100%' }
+  logo: { width: 100, height: 100, marginBottom: 10 }
 });
-
-
-
-
-
