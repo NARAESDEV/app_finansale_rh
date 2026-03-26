@@ -7,32 +7,25 @@ export default function TabsLayout() {
 
   return (
     <Tabs screenOptions={{
+      // //estilos de navbar
       tabBarActiveTintColor: theme.colors.primary,
       tabBarInactiveTintColor: '#94A3B8',
       headerShown: false,
-      tabBarStyle: { height: 60, paddingBottom: 10 }
+      tabBarStyle: { height: 65, paddingBottom: 12, backgroundColor: '#FFFFFF', borderTopColor: '#E2E8F0' },
+      tabBarLabelStyle: { fontWeight: 'bold', fontSize: 11 }
     }}>
-      <Tabs.Screen
-        name="index"
-        options={{
+      <Tabs.Screen name="index" options={{
           title: 'INICIO',
-          tabBarIcon: ({ color }) => <MaterialCommunityIcons name="home" size={28} color={color} />,
-        }}
-      />
-      <Tabs.Screen
-        name="requests"
-        options={{
+          tabBarIcon: ({ color }) => <MaterialCommunityIcons name="home-outline" size={28} color={color} />,
+      }} />
+      <Tabs.Screen name="requests" options={{
           title: 'SOLICITUDES',
-          tabBarIcon: ({ color }) => <MaterialCommunityIcons name="clipboard-text-clock" size={28} color={color} />,
-        }}
-      />
-      <Tabs.Screen
-        name="history"
-        options={{
+          tabBarIcon: ({ color }) => <MaterialCommunityIcons name="clipboard-text-clock-outline" size={28} color={color} />,
+      }} />
+      <Tabs.Screen name="history" options={{
           title: 'HISTORIAL',
           tabBarIcon: ({ color }) => <MaterialCommunityIcons name="history" size={28} color={color} />,
-        }}
-      />
+      }} />
     </Tabs>
   );
 }

@@ -4,12 +4,14 @@ export const theme = {
     ...MD3LightTheme,
     colors: {
         ...MD3LightTheme.colors,
-        primary: '#3E77BC',       // Azul Marino (Botones/Títulos)
-        secondary: '#15803D',     // Verde (Aprobaciones/Confirmar)
-        tertiary: '#4F8CC9',      // Azul Cielo
-        error: '#E11D48',         // Rojo (Rechazar)
-        background: '#F9FCFF',    // Fondo limpio de las capturas
+        primary: '#3E77BC',       // Azul Marino Corporativo
+        secondary: '#15803D',     // Verde Confirmaciones
+        tertiary: '#EDF2F7',      // Gris Azulado Claro (para fondos de cards)
+        error: '#E11D48',         // Rojo Rechazos
+        background: '#F9FCFF',    // Fondo limpio de la app
         surface: '#FFFFFF',
-        outline: '#E2E8F0',       // Bordes de inputs
+        textPrimary: '#1E293B',   // Azul Oscuro de títulos
+        textSecondary: '#64748B', // Gris de subtítulos
+        success: '#DCFCE7',       // Verde claro de fondo para badges
     },
 };
