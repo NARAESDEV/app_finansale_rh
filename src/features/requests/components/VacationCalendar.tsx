@@ -1,29 +1,50 @@
+import { eachDayOfInterval, format, isBefore } from 'date-fns';
 import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { Calendar, LocaleConfig } from 'react-native-calendars';
-import { Text, useTheme } from 'react-native-paper';
-
-// Configuración en español
-LocaleConfig.locales['es'] = {
-    monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-    monthNamesShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
-    dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
-    dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'],
-};
-LocaleConfig.defaultLocale = 'es';
+import { Calendar } from 'react-native-calendars';
+import { Text } from 'react-native-paper';
 
 export const VacationCalendar = () => {
-    const theme = useTheme();
-    const [selectedRange, setSelectedRange] = useState({});
+    const [range, setRange] = useState<{ start?: string; end?: string }>({});
+    const [markedDates, setMarkedDates] = useState<any>({});
 
     // //metodo para seleccionar los dias en el calendario
     const onDayPress = (day: any) => {
-        // Aquí implementaremos la lógica de rango (Start/End) en el siguiente paso
-        // Por ahora, marcamos un día para probar la UI
-        setSelectedRange({
-            [day.dateString]: { selected: true, startingDay: true, endingDay: true, color: '#3E77BC' }
-        });
-        console.log('Día seleccionado:', day.dateString);
+        const { dateString } = day;
+
+        if (!range.start || (range.start && range.end)) {
+            // Reiniciar y establecer fecha de inicio
+            setRange({ start: dateString });
+            setMarkedDates({
+                [dateString]: { startingDay: true, color: '#3E77BC', textColor: 'white' }
+            });
+        } else {
+            // Establecer fecha de fin si es posterior al inicio
+            if (isBefore(new Date(dateString), new Date(range.start))) {
+                setRange({ start: dateString });
+                setMarkedDates({ [dateString]: { startingDay: true, color: '#3E77BC', textColor: 'white' } });
+            } else {
+                const interval = eachDayOfInterval({
+                    start: new Date(range.start),
+                    end: new Date(dateString)
+                });
+
+                const newMarked: any = {};
+                interval.forEach((date: Date, index: number) => {
+                    const ds = format(date, 'yyyy-MM-dd');
+                    newMarked[ds] = {
+                        color: '#3E77BC',
+                        textColor: 'white',
+                        startingDay: index === 0,
+                        endingDay: index === interval.length - 1,
+                        // Agregamos opacidad a los días intermedios para que se vea más pro
+                        opacity: index === 0 || index === interval.length - 1 ? 1 : 0.7
+                    };
+                });
+                setRange({ ...range, end: dateString });
+                setMarkedDates(newMarked);
+            }
+        }
     };
 
     return (
@@ -32,7 +53,7 @@ export const VacationCalendar = () => {
             <Calendar
                 onDayPress={onDayPress}
                 markingType={'period'}
-                markedDates={selectedRange}
+                markedDates={markedDates}
                 theme={{
                     calendarBackground: 'transparent',
                     textSectionTitleColor: '#64748B',
@@ -40,10 +61,8 @@ export const VacationCalendar = () => {
                     selectedDayTextColor: '#ffffff',
                     todayTextColor: '#F47C00',
                     dayTextColor: '#1E293B',
-                    textDisabledColor: '#CBD5E1',
                     arrowColor: '#3E77BC',
                     monthTextColor: '#1E293B',
-                    indicatorColor: '#3E77BC',
                     textDayFontWeight: '600',
                     textMonthFontWeight: 'bold',
                     textDayHeaderFontWeight: 'bold',
@@ -55,14 +74,11 @@ export const VacationCalendar = () => {
 };
 
 const styles = StyleSheet.create({
-    container: { marginTop: 20 },
-    label: { fontSize: 16, fontWeight: 'bold', color: '#3E77BC', marginBottom: 10 },
+    container: { marginTop: 25 },
+    label: { fontSize: 14, fontWeight: '800', color: '#3E77BC', marginBottom: 12, textTransform: 'uppercase' },
     calendarShadow: {
-        borderRadius: 15,
-        elevation: 4,
-        shadowColor: '#000',
-        shadowOpacity: 0.05,
-        shadowRadius: 10,
+        borderRadius: 20,
+        elevation: 3,
         padding: 10,
         backgroundColor: 'white'
     }
