@@ -8,15 +8,15 @@ import { useAuthStore } from '../../src/features/auth/store/useAuthStore'; // Im
 export default function LoginScreen() {
   const theme = useTheme();
   const login = useAuthStore((state) => state.login); // Obtenemos la función login
-const router = useRouter();
+  const router = useRouter();
 
-const handleLogin = () => {
+  const handleLogin = () => {
     // 1. Cambiamos el estado global
-    login(); 
-    
+    login();
+
     // 2. Navegamos inmediatamente a los tabs
     // Usamos replace para que el usuario no pueda "volver" al login con el botón de atrás
-    router.replace('/(tabs)'); 
+    router.replace('/(tabs)');
   };
   return (
     <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
@@ -24,17 +24,17 @@ const handleLogin = () => {
         <View style={styles.header}>
           <Image source={require('../../assets/images/logo.png')} style={styles.logo} />
           <Text variant="headlineMedium" style={{ fontWeight: 'bold', color: theme.colors.primary }}>
-            FinanSale HR
+            FinanSale
           </Text>
         </View>
 
         <CustomInput label="Correo electrónico" />
         <CustomInput label="Contraseña" secureTextEntry />
-        
-        <CustomButton 
-          title="Entrar" 
+
+        <CustomButton
+          title="Entrar"
           onPress={handleLogin}
-          color={theme.colors.primary} 
+          color={theme.colors.primary}
         />
       </View>
     </View>

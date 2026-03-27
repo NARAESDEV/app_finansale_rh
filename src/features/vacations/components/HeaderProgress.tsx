@@ -14,7 +14,7 @@ export const HeaderProgress = ({ name, progress }: Props) => (
             <View style={styles.userInfo}>
                 <Avatar.Image size={50} source={{ uri: 'https://i.pravatar.cc/150' }} />
                 <View style={styles.textContainer}>
-                    <Text style={styles.hi}>Hi,</Text>
+                    <Text style={styles.hi}>Hola,</Text>
                     <Text style={styles.name}>{name}</Text>
                 </View>
             </View>

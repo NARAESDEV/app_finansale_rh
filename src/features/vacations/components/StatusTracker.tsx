@@ -1,29 +1,38 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { Surface, Text } from 'react-native-paper';
 
-export const StatusTracker = () => (
-    <Surface style={styles.container} elevation={1}>
-        <Text style={styles.title}>Estado de tu última solicitud</Text>
-        <View style={styles.row}>
-            <View style={styles.step}>
-                <MaterialCommunityIcons name="check-circle" size={24} color="#15803D" />
-                <Text style={styles.stepText}>Enviada</Text>
-            </View>
-            <View style={styles.lineActive} />
-            <View style={styles.step}>
-                <MaterialCommunityIcons name="clock-outline" size={24} color="#3E77BC" />
-                <Text style={[styles.stepText, { color: '#3E77BC', fontWeight: 'bold' }]}>Pendiente</Text>
-            </View>
-            <View style={styles.lineInactive} />
-            <View style={styles.step}>
-                <MaterialCommunityIcons name="circle-outline" size={24} color="#94A3B8" />
-                <Text style={styles.stepText}>Aprobada</Text>
-            </View>
-        </View>
-    </Surface>
-);
+import { useRouter } from 'expo-router';
+export const StatusTracker = () => {
+    const router = useRouter();
+    return (
+        <TouchableOpacity
+            activeOpacity={0.8}
+            onPress={() => router.push('/requests/123')} // '123' sería el ID de la solicitud
+        >
+            <Surface style={styles.container} elevation={1}>
+                <Text style={styles.title}>Estado de tu última solicitud</Text>
+                <View style={styles.row}>
+                    <View style={styles.step}>
+                        <MaterialCommunityIcons name="check-circle" size={24} color="#15803D" />
+                        <Text style={styles.stepText}>Enviada</Text>
+                    </View>
+                    <View style={styles.lineActive} />
+                    <View style={styles.step}>
+                        <MaterialCommunityIcons name="clock-outline" size={24} color="#3E77BC" />
+                        <Text style={[styles.stepText, { color: '#3E77BC', fontWeight: 'bold' }]}>Pendiente</Text>
+                    </View>
+                    <View style={styles.lineInactive} />
+                    <View style={styles.step}>
+                        <MaterialCommunityIcons name="circle-outline" size={24} color="#94A3B8" />
+                        <Text style={styles.stepText}>Aprobada</Text>
+                    </View>
+                </View>
+            </Surface>
+        </TouchableOpacity>
+    )
+};
 
 const styles = StyleSheet.create({
     container: { padding: 20, borderRadius: 20, backgroundColor: '#FFFFFF', marginTop: 20 },
