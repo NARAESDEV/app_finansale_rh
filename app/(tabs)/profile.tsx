@@ -1,6 +1,5 @@
-import { View } from 'react-native';
-import { Text } from 'react-native-paper';
+import ProfileView from '../../src/features/profile/components/ProfileView';
 
 export default function ProfileScreen() {
-  return <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}><Text>Perfil</Text></View>;
+    return <ProfileView />;
 }
