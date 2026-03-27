@@ -1,14 +1,26 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import { ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { Card, Divider, Menu, Text } from 'react-native-paper';
 import { CustomButton } from '../../src/components/ui/CustomButton';
+import { SuccessModal } from '../../src/components/ui/SuccessModal';
 import { VacationCalendar } from '../../src/features/requests/components/VacationCalendar';
-
 export default function RequestsScreen() {
+    const [showSuccess, setShowSuccess] = useState(false);
     const [visible, setVisible] = useState(false);
     const [type, setType] = useState('Vacaciones');
+    const router = useRouter();
 
+    const handleSend = () => {
+        // //funcion de navegacion con feedback
+        setShowSuccess(true);
+    };
+
+    const handleFinalize = () => {
+        setShowSuccess(false);
+        router.replace('/(tabs)'); // Nos regresa al dashboard
+    };
     return (
         <ScrollView style={styles.container} contentContainerStyle={styles.content}>
             <Text variant="headlineMedium" style={styles.title}>Nueva Solicitud</Text>
@@ -58,9 +70,14 @@ export default function RequestsScreen() {
             <View style={styles.footer}>
                 <CustomButton
                     title="Enviar Solicitud"
-                    onPress={() => { }}
+                    onPress={handleSend}
                     color="#3E77BC" // Unificado al Azul Marino
                     icon="send"
+                />
+                <SuccessModal
+                    visible={showSuccess}
+                    onDismiss={() => setShowSuccess(false)}
+                    onConfirm={handleFinalize}
                 />
                 <TouchableOpacity style={styles.cancelBtn}>
                     <Text style={styles.cancelText}>Cancelar</Text>

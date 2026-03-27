@@ -1,4 +1,4 @@
-import { eachDayOfInterval, format, isBefore } from 'date-fns';
+import { eachDayOfInterval, format, isBefore, parseISO } from 'date-fns';
 import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Calendar } from 'react-native-calendars';
@@ -8,25 +8,25 @@ export const VacationCalendar = () => {
     const [range, setRange] = useState<{ start?: string; end?: string }>({});
     const [markedDates, setMarkedDates] = useState<any>({});
 
-    // //metodo para seleccionar los dias en el calendario
     const onDayPress = (day: any) => {
         const { dateString } = day;
 
+        // Si no hay inicio o ya hay un rango completo, empezamos de nuevo
         if (!range.start || (range.start && range.end)) {
-            // Reiniciar y establecer fecha de inicio
             setRange({ start: dateString });
             setMarkedDates({
-                [dateString]: { startingDay: true, color: '#3E77BC', textColor: 'white' }
+                [dateString]: { startingDay: true, endingDay: true, color: '#3E77BC', textColor: 'white' }
             });
         } else {
-            // Establecer fecha de fin si es posterior al inicio
-            if (isBefore(new Date(dateString), new Date(range.start))) {
+            // Si la nueva fecha es anterior a la de inicio, la invertimos o reiniciamos
+            if (isBefore(parseISO(dateString), parseISO(range.start))) {
                 setRange({ start: dateString });
-                setMarkedDates({ [dateString]: { startingDay: true, color: '#3E77BC', textColor: 'white' } });
+                setMarkedDates({ [dateString]: { startingDay: true, endingDay: true, color: '#3E77BC', textColor: 'white' } });
             } else {
+                // Generamos el intervalo completo entre Start y End
                 const interval = eachDayOfInterval({
-                    start: new Date(range.start),
-                    end: new Date(dateString)
+                    start: parseISO(range.start),
+                    end: parseISO(dateString)
                 });
 
                 const newMarked: any = {};
@@ -37,10 +37,11 @@ export const VacationCalendar = () => {
                         textColor: 'white',
                         startingDay: index === 0,
                         endingDay: index === interval.length - 1,
-                        // Agregamos opacidad a los días intermedios para que se vea más pro
-                        opacity: index === 0 || index === interval.length - 1 ? 1 : 0.7
+                        // Importante: todos los días del medio deben tener color
+                        selected: true
                     };
                 });
+
                 setRange({ ...range, end: dateString });
                 setMarkedDates(newMarked);
             }
@@ -56,9 +57,6 @@ export const VacationCalendar = () => {
                 markedDates={markedDates}
                 theme={{
                     calendarBackground: 'transparent',
-                    textSectionTitleColor: '#64748B',
-                    selectedDayBackgroundColor: '#3E77BC',
-                    selectedDayTextColor: '#ffffff',
                     todayTextColor: '#F47C00',
                     dayTextColor: '#1E293B',
                     arrowColor: '#3E77BC',
@@ -76,10 +74,5 @@ export const VacationCalendar = () => {
 const styles = StyleSheet.create({
     container: { marginTop: 25 },
     label: { fontSize: 14, fontWeight: '800', color: '#3E77BC', marginBottom: 12, textTransform: 'uppercase' },
-    calendarShadow: {
-        borderRadius: 20,
-        elevation: 3,
-        padding: 10,
-        backgroundColor: 'white'
-    }
+    calendarShadow: { borderRadius: 20, elevation: 3, padding: 10, backgroundColor: 'white' }
 });

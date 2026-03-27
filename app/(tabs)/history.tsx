@@ -1,6 +1,5 @@
-import { View } from 'react-native';
-import { Text } from 'react-native-paper';
+import HistoryView from '../../src/features/history/components/HistoryView';
 
 export default function HistoryScreen() {
-  return <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}><Text>Historial</Text></View>;
+    return <HistoryView />;
 }
