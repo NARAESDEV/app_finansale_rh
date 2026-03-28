@@ -1,5 +1,6 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Tabs } from 'expo-router';
+import { Platform, StyleSheet } from 'react-native';
 import { useTheme } from 'react-native-paper';
 
 export default function TabsLayout() {
@@ -7,25 +8,51 @@ export default function TabsLayout() {
 
   return (
     <Tabs screenOptions={{
-      // //estilos de navbar
-      tabBarActiveTintColor: theme.colors.primary,
-      tabBarInactiveTintColor: '#94A3B8',
       headerShown: false,
-      tabBarStyle: { height: 65, paddingBottom: 12, backgroundColor: '#FFFFFF', borderTopColor: '#E2E8F0' },
-      tabBarLabelStyle: { fontWeight: 'bold', fontSize: 11 }
+      tabBarActiveTintColor: '#3E77BC',
+      tabBarInactiveTintColor: '#94A3B8',
+      // //estilos de navbar
+      tabBarStyle: styles.tabBar,
+      tabBarLabelStyle: styles.label,
     }}>
       <Tabs.Screen name="index" options={{
-          title: 'INICIO',
-          tabBarIcon: ({ color }) => <MaterialCommunityIcons name="home-outline" size={28} color={color} />,
+        title: 'Inicio',
+        tabBarIcon: ({ color }) => <MaterialCommunityIcons name="home-variant" size={26} color={color} />,
       }} />
       <Tabs.Screen name="requests" options={{
-          title: 'SOLICITUDES',
-          tabBarIcon: ({ color }) => <MaterialCommunityIcons name="clipboard-text-clock-outline" size={28} color={color} />,
+        title: 'Solicitudes',
+        tabBarIcon: ({ color }) => <MaterialCommunityIcons name="clipboard-text-outline" size={26} color={color} />,
       }} />
       <Tabs.Screen name="history" options={{
-          title: 'HISTORIAL',
-          tabBarIcon: ({ color }) => <MaterialCommunityIcons name="history" size={28} color={color} />,
+        title: 'Historial',
+        tabBarIcon: ({ color }) => <MaterialCommunityIcons name="history" size={26} color={color} />,
+      }} />
+      <Tabs.Screen name="profile" options={{
+        title: 'Perfil',
+        tabBarIcon: ({ color }) => <MaterialCommunityIcons name="account-outline" size={26} color={color} />,
       }} />
     </Tabs>
   );
 }
+
+const styles = StyleSheet.create({
+  tabBar: {
+    height: 70,
+    backgroundColor: '#FFFFFF',
+    borderTopWidth: 1,
+    borderTopColor: '#F1F5F9',
+    paddingBottom: Platform.OS === 'ios' ? 25 : 12,
+    paddingTop: 10,
+    // Sombra para que resalte
+    elevation: 20, 
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: -4 },
+    shadowOpacity: 0.1,
+    shadowRadius: 10,
+  },
+  label: { 
+    fontSize: 12, 
+    fontWeight: '700',
+    marginTop: -5
+  }
+});
