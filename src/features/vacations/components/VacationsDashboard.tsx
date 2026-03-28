@@ -15,7 +15,7 @@ export const VacationsDashboard = () => {
       bounces={false}
     >
       {/* 1. Header Brutal (Se mantiene intacto) */}
-      <HeaderProgress name="Josue Vasquez" progress={0.61} />
+      <HeaderProgress name="Israel Merlyn" progress={0.61} />
 
       <View style={styles.content}>
 
