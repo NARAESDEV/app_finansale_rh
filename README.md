@@ -1,50 +1,60 @@
-# Welcome to your Expo app 👋
+# 🏢 FinanSale HR - Mobile App
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Aplicación móvil de gestión de Recursos Humanos exclusiva para empleados. Diseñada con un enfoque "Mobile-First", UI premium (Glassmorphism, Neumorfismo ligero) y UX optimizada para autoservicio de personal.
 
-## Get started
+## 🚀 Tecnologías Core (Stack Senior)
+* **Framework:** React Native (Expo SDK)
+* **Enrutamiento:** Expo Router (File-based routing nativo)
+* **UI Kit:** React Native Paper (Material Design v3)
+* **Estado del Cliente:** Zustand (Ligero, rápido y sin boilerplate)
+* **Estado del Servidor (Caché):** TanStack Query (React Query)
+* **Manejo de Fechas:** `date-fns`
+* **Listas de Alto Rendimiento:** `@shopify/flash-list`
 
-1. Install dependencies
+## 🏗️ Arquitectura: Feature-Sliced Design (FSD)
+El proyecto sigue una estructura modular para garantizar la escalabilidad y mantenibilidad, separando la lógica por dominio de negocio:
 
-   ```bash
-   npm install
-   ```
+```text
+src/
+  ├── core/            # Configuración global (Temas de RN Paper, Constantes)
+  ├── components/      # UI genérica (CustomButtons, CustomInputs, CircularStats)
+  └── features/        # Módulos de negocio (El corazón de la app)
+       ├── auth/       # Login, Recuperación Segura de Contraseña, Zustand Store
+       ├── vacations/  # Dashboard, Solicitudes, Tracking de Estado
+       ├── history/    # Historial de ciclos pasados
+       └── profile/    # Datos del empleado y configuraciones
 
-2. Start the app
+       ---
 
-   ```bash
-   npx expo start
-   ```
+### 🛠️ PASO 2: Preparar la Compilación (El APK)
 
-In the output, you'll find options to open the app in a
+Para generar el archivo instalable en tu teléfono, usaremos **EAS (Expo Application Services)**. Por defecto, EAS genera archivos `.aab` (para subir a la tienda), pero nosotros necesitamos un `.apk` para probarlo localmente en tu Android.
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
-
-```bash
-npm run reset-project
+**1. Actualiza o crea el archivo `eas.json` en la raíz de tu proyecto con esto:**
 ```
-
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
-
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+json
+{
+  "cli": {
+    "version": ">= 7.0.0"
+  },
+  "build": {
+    "development": {
+      "developmentClient": true,
+      "distribution": "internal"
+    },
+    "preview": {
+      "distribution": "internal",
+      "android": {
+        "buildType": "apk"
+      }
+    },
+    "production": {
+      "env": {
+        "EXPO_PUBLIC_APP_ENV": "production"
+      }
+    }
+  },
+  "submit": {
+    "production": {}
+  }
+}
