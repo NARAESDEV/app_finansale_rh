@@ -30,6 +30,12 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Debug refs
+        run: |
+          echo "github.ref=${{ github.ref }}"
+          echo "github.ref_name=${{ github.ref_name }}"
+          git status
+          git branch --show-current
       - name: Publish OTA update
         run: |
           eas update \
