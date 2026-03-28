@@ -84,6 +84,18 @@ export const RequestDetailView = ({ id }: Props) => {
                             <Text style={styles.obsText}>"Estamos revisando la carga de trabajo para esas fechas."</Text>
                         </View>
                     </View>
+                    <View style={styles.timelineStep}>
+                        <View style={styles.iconColumn}>
+                            <View style={[styles.stepIcon, { backgroundColor: '#F1F5F9' }]}>
+                                <MaterialCommunityIcons name="dots-horizontal" size={20} color="#64748B" />
+                            </View>
+
+                        </View>
+                        <View style={styles.stepContent}>
+                            <Text style={[styles.stepTitle, { color: '#64748B' }]}>Resolución Final</Text>
+                            <Text style={styles.stepDesc}>Pendiente de los pasos anteriores.</Text>
+                        </View>
+                    </View>
                 </Surface>
             </ScrollView>
 
