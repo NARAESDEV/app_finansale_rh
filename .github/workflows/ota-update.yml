@@ -1,6 +1,5 @@
 name: EAS OTA Update (Preview)
 
-# ¿Cuándo se ejecuta esto?
 on:
   push:
     branches:
@@ -13,29 +12,28 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1. Clona tu código en el servidor de GitHub
-      - name: 🏗 Configurar repositorio
-        uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v5
 
-      # 2. Prepara Node.js
-      - name: 🏗 Configurar Node.js
-        uses: actions/setup-node@v3
+      - name: Setup Node
+        uses: actions/setup-node@v6
         with:
-          node-version: 18.x
+          node-version: 22
           cache: npm
 
-      # 3. Instala Expo y se loguea en tu cuenta usando un Token Secreto
-      - name: 🏗 Configurar Expo y EAS
+      - name: Setup Expo and EAS
         uses: expo/expo-github-action@v8
         with:
           eas-version: latest
           token: ${{ secrets.EXPO_TOKEN }}
 
-      # 4. Instala tus librerías (node_modules)
-      - name: 📦 Instalar dependencias
-        run: npm install
+      - name: Install dependencies
+        run: npm ci
 
-      # 5. ¡LA MAGIA! Envía la actualización a los celulares
-      - name: 🚀 Enviar Actualización OTA (Over-The-Air)
+      - name: Publish OTA update
         run: |
-          eas update --auto --branch preview --message "Actualización automática CI/CD: ${{ github.event.head_commit.message }}"
+          eas update \
+            --branch preview \
+            --message "Actualización automática CI/CD: ${{ github.event.head_commit.message }}" \
+            --environment preview \
+            --non-interactive
