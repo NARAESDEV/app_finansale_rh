@@ -16,7 +16,7 @@ export default function LoginScreen() {
 
     // 2. Navegamos inmediatamente a los tabs
     // Usamos replace para que el usuario no pueda "volver" al login con el botón de atrás
-    router.replace('/(tabs)');
+    router.replace('/home');
   };
   return (
     <View style={[styles.container, { backgroundColor: theme.colors.background }]}>

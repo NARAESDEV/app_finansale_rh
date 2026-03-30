@@ -31,6 +31,8 @@ export default function TabsLayout() {
         title: 'Perfil',
         tabBarIcon: ({ color }) => <MaterialCommunityIcons name="account-outline" size={26} color={color} />,
       }} />
+
+
     </Tabs>
   );
 }
@@ -44,14 +46,14 @@ const styles = StyleSheet.create({
     paddingBottom: Platform.OS === 'ios' ? 25 : 12,
     paddingTop: 10,
     // Sombra para que resalte
-    elevation: 20, 
+    elevation: 20,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: -4 },
     shadowOpacity: 0.1,
     shadowRadius: 10,
   },
-  label: { 
-    fontSize: 12, 
+  label: {
+    fontSize: 12,
     fontWeight: '700',
     marginTop: -5
   }
