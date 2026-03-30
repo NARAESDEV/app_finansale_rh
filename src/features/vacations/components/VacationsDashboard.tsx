@@ -14,12 +14,12 @@ export const VacationsDashboard = () => {
       showsVerticalScrollIndicator={false}
       bounces={false}
     >
-      {/* 1. Header Brutal (Se mantiene intacto) */}
+      {/* Header */}
       <HeaderProgress name="Israel Merlyn" progress={0.61} />
 
       <View style={styles.content}>
 
-        {/* 2. Resumen con Círculos Rediseñados */}
+        {/* Resumen con Círculos*/}
         <Surface style={styles.statsSurface} elevation={2}>
           <Text style={styles.sectionTitle}>RESUMEN DEL PERIODO</Text>
           <View style={styles.statsRow}>
@@ -29,7 +29,7 @@ export const VacationsDashboard = () => {
           </View>
         </Surface>
 
-        {/* 3. News / Announcements (Lo que le faltaba) */}
+        {/* anuncios */}
         <View style={styles.newsSection}>
           <View style={styles.rowBetween}>
             <Text style={styles.sectionTitle}>ANUNCIOS</Text>
@@ -48,10 +48,10 @@ export const VacationsDashboard = () => {
           </Card>
         </View>
 
-        {/* 4. Tracking de Solicitud */}
+        {/* Tracking de Solicitud */}
         <StatusTracker />
 
-        {/* 5. Quick Links Estilizados */}
+        {/* Quick Links Estilizados */}
         <View style={styles.quickLinks}>
           <TouchableOpacity style={styles.linkItem}>
             <Surface style={styles.linkCircle} elevation={1}>
