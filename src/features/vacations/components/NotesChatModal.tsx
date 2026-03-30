@@ -93,7 +93,7 @@ export const NotesChatModal = ({ visible, onClose, ticketId }: NotesChatModalPro
         <Modal visible={visible} animationType="slide" onRequestClose={onClose}>
             <View style={styles.container}>
 
-                <Appbar.Header style={styles.appBar} statusBarHeight={Platform.OS === 'ios' ? 40 : 0}>
+                <Appbar.Header style={styles.appBar} statusBarHeight={0}>
                     <Appbar.BackAction onPress={onClose} color="#3E77BC" />
                     <View style={styles.headerAvatarWrapper}>
                         <Avatar.Icon size={38} icon="headset" style={{ backgroundColor: '#E3F2FD' }} color="#3E77BC" />
@@ -154,7 +154,7 @@ const styles = StyleSheet.create({
     container: { flex: 1, backgroundColor: '#F9FCFF' },
 
     // AppBar
-    appBar: { backgroundColor: 'white', elevation: 4, shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.05, shadowRadius: 3 },
+    appBar: { backgroundColor: 'white', elevation: 4, shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.05, shadowRadius: 3, paddingTop: Platform.OS === 'android' ? 40 : 50, height: Platform.OS === 'android' ? 100 : 110, },
     appBarTitle: { fontWeight: 'bold', color: '#1E293B', fontSize: 16 },
     appBarSubtitle: { color: '#15803D', fontSize: 12, fontWeight: '600' },
     headerAvatarWrapper: { position: 'relative', justifyContent: 'center', marginLeft: 10 },
