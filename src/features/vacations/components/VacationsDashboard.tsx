@@ -15,13 +15,13 @@ export const VacationsDashboard = () => {
       bounces={false}
     >
       {/* 1. Header Brutal (Se mantiene intacto) */}
-      <HeaderProgress name="Josue Vasquez" progress={0.61} />
+      <HeaderProgress name="Israel Merlyn" progress={0.61} />
 
       <View style={styles.content}>
 
         {/* 2. Resumen con Círculos Rediseñados */}
         <Surface style={styles.statsSurface} elevation={2}>
-          <Text style={styles.sectionTitle}>RESUMEN DE CICLO 2026</Text>
+          <Text style={styles.sectionTitle}>RESUMEN DEL PERIODO</Text>
           <View style={styles.statsRow}>
             <CircularStat value={14} label="DÍAS USADOS" color="#15803D" subValue="Goce" />
             <CircularStat value={10} label="PENDIENTES" color="#F47C00" subValue="Plan" />
