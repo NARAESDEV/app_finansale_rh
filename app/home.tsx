@@ -20,7 +20,7 @@ export default function MainHubScreen() {
         },
         {
             id: '2',
-            title: 'Finanzas',
+            title: 'Finanzas y Facturacion',
             subtitle: 'Sin permisos',
             icon: 'chart-pie',
             color: '#10B981', // Verde
@@ -30,7 +30,7 @@ export default function MainHubScreen() {
         {
             id: '3',
             title: 'Oportunidades',
-            subtitle: 'Próximamente',
+            subtitle: 'Sin permisos',
             icon: 'school',
             color: '#8B5CF6', // Morado
             route: null,
@@ -39,7 +39,7 @@ export default function MainHubScreen() {
         {
             id: '4',
             title: 'Ticket NS',
-            subtitle: 'Mantenimiento',
+            subtitle: 'Sin permisos',
             icon: 'laptop',
             color: '#3B82F6', // Azul
             route: null,
@@ -48,7 +48,7 @@ export default function MainHubScreen() {
         {
             id: '5',
             title: 'Entrega',
-            subtitle: 'Mantenimiento',
+            subtitle: 'Sin permisos',
             icon: 'truck-fast',
             color: '#3B82F6', // Azul
             route: null,
@@ -93,7 +93,7 @@ const styles = StyleSheet.create({
         flexWrap: 'wrap',
         justifyContent: 'space-between',
         paddingHorizontal: 20,
-        marginTop: -30, // ¡EL TRUCO! Hace que las tarjetas se suban a la curva del header
+        marginTop: -30,
         paddingBottom: 40,
     }
 });

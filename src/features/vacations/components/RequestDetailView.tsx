@@ -1,8 +1,9 @@
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { ChatFAB } from '@/src/components/ui/ChatFAB';
+import { ProcessTimeline, TimelineStepType } from '@/src/components/ui/ProcessTimeline';
 import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
-import { Avatar, Card, Divider, FAB, IconButton, Surface, Text } from 'react-native-paper';
+import { Avatar, Card, Divider, IconButton, Text } from 'react-native-paper';
 import { NotesChatModal } from './NotesChatModal'; // Importamos el chat
 
 interface Props { id: string; }
@@ -10,6 +11,36 @@ interface Props { id: string; }
 export const RequestDetailView = ({ id }: Props) => {
     const router = useRouter();
     const [chatVisible, setChatVisible] = useState(false); // Estado del Chat
+
+    const timelineSteps: TimelineStepType[] = [
+        {
+            id: 'step-1',
+            title: 'Solicitud Enviada',
+            desc: 'Iniciaste el proceso de solicitud de vacaciones.',
+            status: 'completed',
+            icon: 'check',
+            color: '#15803D'
+        },
+        {
+            id: 'step-2',
+            title: 'Pendiente de Aprobación',
+            desc: 'Asignado a: Gerencia de Operaciones.',
+            status: 'current',
+            icon: 'clock-outline',
+            color: '#3E77BC',
+            obsText: 'Estamos revisando la carga de trabajo para esas fechas.'
+            // Ojo: Aquí NO le ponemos isActionable: true, porque el empleado 
+            // no puede auto-aprobarse ni reasignar nada. Solo está mirando.
+        },
+        {
+            id: 'step-3',
+            title: 'Resolución Final',
+            desc: 'Pendiente de los pasos anteriores.',
+            status: 'pending',
+            icon: 'dots-horizontal',
+            color: '#64748B'
+        }
+    ];
 
     return (
         <View style={{ flex: 1, backgroundColor: '#F9FCFF' }}>
@@ -44,70 +75,19 @@ export const RequestDetailView = ({ id }: Props) => {
 
                 {/* Timeline */}
                 <Text style={styles.sectionTitle}>ESTADO DEL PROCESO</Text>
-                <Surface style={styles.timelineSurface} elevation={1}>
-                    {/* ... Paso 1 ... */}
-                    <View style={styles.timelineStep}>
-                        <View style={styles.iconColumn}>
-                            <View style={[styles.stepIcon, { backgroundColor: '#DCFCE7' }]}>
-                                <MaterialCommunityIcons name="check" size={20} color="#15803D" />
-                            </View>
-                            <View style={[styles.verticalLine, { backgroundColor: '#15803D' }]} />
-                        </View>
-                        <View style={styles.stepContent}>
-                            <Text style={styles.stepTitle}>Solicitud Enviada</Text>
-                            <Text style={styles.stepDesc}>Iniciaste el proceso de solicitud de vacaciones.</Text>
-                        </View>
-                    </View>
-
-                    {/* Paso 2: ACTUAL (CORREGIDO EL DESBORDAMIENTO) */}
-                    <View style={styles.timelineStep}>
-                        <View style={styles.iconColumn}>
-                            <View style={[styles.stepIcon, { backgroundColor: '#E0F2F1' }]}>
-                                <MaterialCommunityIcons name="clock-outline" size={20} color="#3E77BC" />
-                            </View>
-                            <View style={[styles.verticalLine, { backgroundColor: '#E2E8F0' }]} />
-                        </View>
-                        <View style={styles.stepContent}>
-
-                            {/* FIX DE DESBORDAMIENTO AQUÍ */}
-                            <View style={styles.rowBetween}>
-                                <Text style={[styles.stepTitle, { color: '#3E77BC', flexShrink: 1, marginRight: 10 }]} numberOfLines={2}>
-                                    Pendiente de Aprobación
-                                </Text>
-                                <Surface style={styles.currentBadge} elevation={0}>
-                                    <Text style={styles.badgeText}>ACTUAL</Text>
-                                </Surface>
-                            </View>
-                            {/* FIN DEL FIX */}
-
-                            <Text style={styles.stepDesc}>Asignado a: Gerencia de Operaciones.</Text>
-                            <Text style={styles.obsText}>"Estamos revisando la carga de trabajo para esas fechas."</Text>
-                        </View>
-                    </View>
-                    <View style={styles.timelineStep}>
-                        <View style={styles.iconColumn}>
-                            <View style={[styles.stepIcon, { backgroundColor: '#F1F5F9' }]}>
-                                <MaterialCommunityIcons name="dots-horizontal" size={20} color="#64748B" />
-                            </View>
-
-                        </View>
-                        <View style={styles.stepContent}>
-                            <Text style={[styles.stepTitle, { color: '#64748B' }]}>Resolución Final</Text>
-                            <Text style={styles.stepDesc}>Pendiente de los pasos anteriores.</Text>
-                        </View>
-                    </View>
-                </Surface>
+                <ProcessTimeline steps={timelineSteps} />
             </ScrollView>
 
             {/* BOTÓN FLOTANTE PARA ABRIR CHAT */}
-            <FAB
+            {/* <FAB
                 icon="message-text-outline"
                 style={styles.fab}
                 color="white"
                 onPress={() => setChatVisible(true)}
-                label="Chat"
-            />
+                label="Notas"
+            /> */}
 
+            <ChatFAB onPress={() => setChatVisible(true)} count={2} />
             {/* COMPONENTE DE CHAT MODAL */}
             <NotesChatModal
                 visible={chatVisible}

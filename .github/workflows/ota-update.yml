@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - master
-      - chore/configurarion-ota-ci-cd
+      - release
 
 jobs:
   publish-update:

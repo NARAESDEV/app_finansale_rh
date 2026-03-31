@@ -1,12 +1,18 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import React from 'react';
 import { ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
-import { Card, Surface, Text } from 'react-native-paper';
+// 1 y 2. Agrupamos Button y Avatar en react-native-paper
+import { useRouter } from 'expo-router'; // 3. Importamos el router
+import { Avatar, Button, Card, Surface, Text } from 'react-native-paper';
+
+// Asegúrate de que estas rutas sean las correctas en tu proyecto
 import { CircularStat } from '../../../components/ui/CircularStat';
 import { HeaderProgress } from './HeaderProgress';
 import { StatusTracker } from './StatusTracker';
 
 export const VacationsDashboard = () => {
+  const router = useRouter(); // 4. Instanciamos el router aquí
+
   return (
     <ScrollView
       style={styles.container}
@@ -15,7 +21,7 @@ export const VacationsDashboard = () => {
       bounces={false}
     >
       {/* Header */}
-      <HeaderProgress name="Israel Merlyn" progress={0.61} />
+      <HeaderProgress name="Josue Israel" progress={0.61} />
 
       <View style={styles.content}>
 
@@ -28,6 +34,35 @@ export const VacationsDashboard = () => {
             <CircularStat value={24} label="TOTALES" color="#3E77BC" subValue="Ley" />
           </View>
         </Surface>
+
+
+
+        {/* Tracking de Solicitud */}
+        <StatusTracker />
+        {/* GESTIÓN DE EQUIPO */}
+        <View style={styles.managerSection}>
+          <View style={styles.sectionHeader}>
+            {/* Usamos el nuevo estilo managerTitle para que no choque */}
+            <Text style={styles.managerTitle}>Aprobaciones Pendientes</Text>
+            <Button mode="text" compact onPress={() => { router.push('/approvals') }} textColor="#3E77BC">Ver todas</Button>
+          </View>
+
+          <TouchableOpacity
+            activeOpacity={0.7}
+            onPress={() => router.push('/approvals/1005')}
+          >
+            <Surface style={styles.approvalCard} elevation={1}>
+              <View style={styles.approvalLeft}>
+                <Avatar.Image size={45} source={{ uri: 'https://ui-avatars.com/api/?name=Brenda+Gonzalez&background=FFE4E6&color=E11D48' }} />
+                <View style={styles.approvalInfo}>
+                  <Text style={styles.employeeName}>Brenda González</Text>
+                  <Text style={styles.requestType}>Vacaciones Anuales • 6 días</Text>
+                </View>
+              </View>
+              <MaterialCommunityIcons name="chevron-right" size={24} color="#CBD5E1" />
+            </Surface>
+          </TouchableOpacity>
+        </View>
 
         {/* anuncios */}
         <View style={styles.newsSection}>
@@ -47,10 +82,6 @@ export const VacationsDashboard = () => {
             </Card.Content>
           </Card>
         </View>
-
-        {/* Tracking de Solicitud */}
-        <StatusTracker />
-
         {/* Quick Links Estilizados */}
         <View style={styles.quickLinks}>
           <TouchableOpacity style={styles.linkItem}>
@@ -66,6 +97,7 @@ export const VacationsDashboard = () => {
             <Text style={styles.linkText}>Soporte</Text>
           </TouchableOpacity>
         </View>
+
 
       </View>
     </ScrollView>
@@ -95,5 +127,25 @@ const styles = StyleSheet.create({
   quickLinks: { flexDirection: 'row', justifyContent: 'center', gap: 40, marginTop: 30 },
   linkItem: { alignItems: 'center' },
   linkCircle: { width: 50, height: 50, borderRadius: 25, backgroundColor: 'white', justifyContent: 'center', alignItems: 'center' },
-  linkText: { fontSize: 11, fontWeight: 'bold', color: '#64748B', marginTop: 8 }
+  linkText: { fontSize: 11, fontWeight: 'bold', color: '#64748B', marginTop: 8 },
+
+  // Manager Section (Ajustado el padding para no duplicar)
+  managerSection: { marginTop: 35 },
+  sectionHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 },
+  managerTitle: { fontSize: 18, fontWeight: '800', color: '#1E293B' }, // Renombrado para evitar conflictos
+
+  approvalCard: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    backgroundColor: 'white',
+    padding: 15,
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: '#F1F5F9'
+  },
+  approvalLeft: { flexDirection: 'row', alignItems: 'center' },
+  approvalInfo: { marginLeft: 12 },
+  employeeName: { fontSize: 15, fontWeight: 'bold', color: '#1E293B' },
+  requestType: { fontSize: 12, color: '#64748B', marginTop: 2 },
 });
