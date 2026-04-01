@@ -62,7 +62,7 @@ export default function ApprovalsListScreen() {
                         <TouchableOpacity
                             key={item.id}
                             activeOpacity={0.7}
-                            onPress={() => router.push(`/approvals/${item.id}`)} // <-- LA MAGIA DEL ENRUTAMIENTO DINÁMICO
+                            onPress={() => router.push(`/approvals/${item.id}`)}
                         >
                             <Surface style={styles.card} elevation={1}>
 

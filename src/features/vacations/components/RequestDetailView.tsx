@@ -2,8 +2,8 @@ import { ChatFAB } from '@/src/components/ui/ChatFAB';
 import { ProcessTimeline, TimelineStepType } from '@/src/components/ui/ProcessTimeline';
 import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
-import { Avatar, Card, Divider, IconButton, Text } from 'react-native-paper';
+import { Platform, ScrollView, StyleSheet, View } from 'react-native';
+import { Appbar, Avatar, Card, Divider, Text } from 'react-native-paper';
 import { NotesChatModal } from './NotesChatModal'; // Importamos el chat
 
 interface Props { id: string; }
@@ -43,13 +43,14 @@ export const RequestDetailView = ({ id }: Props) => {
     ];
 
     return (
-        <View style={{ flex: 1, backgroundColor: '#F9FCFF' }}>
-            <ScrollView style={styles.container} contentContainerStyle={styles.content}>
-                <View style={styles.navHeader}>
-                    <IconButton icon="arrow-left" onPress={() => router.back()} iconColor="#1E293B" />
-                    <Text variant="titleLarge" style={styles.navTitle}>Detalle de Solicitud</Text>
-                    <IconButton icon="bell-outline" iconColor="#1E293B" />
-                </View>
+        <View style={styles.container}>
+            <Appbar.Header style={styles.appBar} statusBarHeight={0}>
+                <Appbar.BackAction onPress={() => router.back()} color="#3E77BC" />
+                <Appbar.Content title="Aprobacion" titleStyle={styles.appBarTitle} />
+            </Appbar.Header>
+            <ScrollView style={styles.scrollContent} contentContainerStyle={styles.content}>
+
+
 
                 {/* Card de Información */}
                 <Card style={styles.infoCard}>
@@ -74,7 +75,7 @@ export const RequestDetailView = ({ id }: Props) => {
                 </Card>
 
                 {/* Timeline */}
-                <Text style={styles.sectionTitle}>ESTADO DEL PROCESO</Text>
+                {/* <Text style={styles.sectionTitle}>ESTADO DEL PROCESO</Text> */}
                 <ProcessTimeline steps={timelineSteps} />
             </ScrollView>
 
@@ -99,11 +100,14 @@ export const RequestDetailView = ({ id }: Props) => {
 };
 
 const styles = StyleSheet.create({
-    container: { flex: 1 },
+    container: { flex: 1, backgroundColor: '#F9FCFF' },
+    appBar: { backgroundColor: 'white', elevation: 2, paddingTop: Platform.OS === 'android' ? 40 : 50, height: Platform.OS === 'android' ? 100 : 110 },
+    appBarTitle: { fontSize: 18, fontWeight: '800', color: '#1E293B' },
+    scrollContent: { padding: 20, paddingBottom: 120 },
     content: { paddingBottom: 100 },
     navHeader: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingTop: 50, paddingHorizontal: 10 },
     navTitle: { fontWeight: 'bold', color: '#1E293B' },
-    infoCard: { margin: 20, borderRadius: 24, backgroundColor: 'white', elevation: 2 },
+    infoCard: { marginBottom: 10, borderRadius: 20, backgroundColor: 'white', elevation: 2 },
     userRow: { flexDirection: 'row', alignItems: 'center', paddingBottom: 15 },
     userName: { fontSize: 18, fontWeight: 'bold', color: '#1E293B' },
     userJob: { fontSize: 13, color: '#64748B' },

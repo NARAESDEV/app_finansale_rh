@@ -3,73 +3,77 @@ import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Button, Text, TextInput } from 'react-native-paper';
 
-interface ApprovalActionsProps {
-    onApprove: (reason: string) => void;
-    onReject: (reason: string) => void;
+interface TransitionConfig {
+    targetState: string;
+    label: string;
+    color: string;
+    icon: string;
+    requiresUser: boolean;
+    requiresReason: boolean;
 }
 
-export function ApprovalActions({ onApprove, onReject }: ApprovalActionsProps) {
+interface DynamicActionsProps {
+    transitions: TransitionConfig[];
+    onActionTriggered: (transition: TransitionConfig, reason: string) => void;
+}
+
+export function ApprovalActions({ transitions, onActionTriggered }: DynamicActionsProps) {
     const [reason, setReason] = useState('');
     const [error, setError] = useState('');
 
-    const handleReject = () => {
-        if (reason.trim() === '') {
-            setError('⚠️ El motivo es obligatorio para rechazar esta solicitud.');
+    // Verificamos si alguna de las acciones disponibles requiere motivo para mostrar el input
+    const anyActionRequiresReason = transitions.some(t => t.requiresReason);
+
+    const handlePress = (transition: TransitionConfig) => {
+        if (transition.requiresReason && reason.trim() === '') {
+            setError(`⚠️ El motivo es obligatorio para: ${transition.label}`);
             return;
         }
         setError('');
-        onReject(reason);
+        onActionTriggered(transition, reason);
     };
 
-    const handleApprove = () => {
-        setError(''); // Limpiamos errores
-        onApprove(reason); // Para aprobar, pasamos el motivo (puede ir vacío o lleno)
-    };
+    if (!transitions || transitions.length === 0) {
+        return null; // Si no hay acciones (ej. estado Cerrado), no pintamos nada.
+    }
 
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>Resolución de la Solicitud</Text>
+            <Text style={styles.title}>Resolución de Estado</Text>
 
-            {/* Campo de Texto para los Motivos */}
-            <TextInput
-                mode="outlined"
-                label="Motivos o comentarios (Obligatorio para rechazo)"
-                value={reason}
-                onChangeText={(text) => {
-                    setReason(text);
-                    if (error) setError(''); // Quitamos el error en cuanto el usuario empiece a escribir
-                }}
-                multiline
-                numberOfLines={3}
-                outlineColor={error ? '#EF4444' : '#CBD5E1'}
-                activeOutlineColor={error ? '#EF4444' : '#3E77BC'}
-                style={styles.input}
-            />
+            {anyActionRequiresReason && (
+                <>
+                    <TextInput
+                        mode="outlined"
+                        label="Comentarios o justificación"
+                        value={reason}
+                        onChangeText={(text) => {
+                            setReason(text);
+                            if (error) setError('');
+                        }}
+                        multiline
+                        numberOfLines={3}
+                        outlineColor={error ? '#EF4444' : '#CBD5E1'}
+                        activeOutlineColor={error ? '#EF4444' : '#3E77BC'}
+                        style={styles.input}
+                    />
+                    {error ? <Text style={styles.errorText}>{error}</Text> : null}
+                </>
+            )}
 
-            {/* Mensaje de Error (Aparece solo si intentan rechazar en blanco) */}
-            {error ? <Text style={styles.errorText}>{error}</Text> : null}
-
-            {/* Botones de Acción */}
-            <View style={styles.buttonsRow}>
-                <Button
-                    mode="outlined"
-                    onPress={handleReject}
-                    textColor="#EF4444"
-                    style={[styles.button, styles.rejectButton]}
-                    icon={({ size, color }) => <MaterialCommunityIcons name="close-circle-outline" size={size} color={color} />}
-                >
-                    Rechazar
-                </Button>
-
-                <Button
-                    mode="contained"
-                    onPress={handleApprove}
-                    buttonColor="#10B981"
-                    style={styles.button}
-                    icon={({ size, color }) => <MaterialCommunityIcons name="check-circle-outline" size={size} color={color} />}
-                >
-                    Aprobar
-                </Button>
+            <View style={styles.buttonsContainer}>
+                {transitions.map((transition) => (
+                    <Button
+                        key={transition.targetState}
+                        mode="outlined"
+                        onPress={() => handlePress(transition)}
+                        textColor={transition.color}
+                        style={[styles.button, { borderColor: transition.color }]}
+                        icon={({ size }) => <MaterialCommunityIcons name={transition.icon as any} size={size} color={transition.color} />}
+                    >
+                        {transition.label}
+                    </Button>
+                ))}
             </View>
         </View>
     );
@@ -83,12 +87,11 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: '#E2E8F0',
         marginTop: 10,
-        marginBottom: 40, // Espacio extra abajo
+        marginBottom: 40,
     },
     title: { fontSize: 16, fontWeight: '800', color: '#1E293B', marginBottom: 15 },
-    input: { backgroundColor: '#F8FAFC', fontSize: 14 },
+    input: { backgroundColor: '#F8FAFC', fontSize: 14, marginBottom: 5 },
     errorText: { color: '#EF4444', fontSize: 12, marginTop: 5, fontWeight: '600' },
-    buttonsRow: { flexDirection: 'row', justifyContent: 'space-between', gap: 15, marginTop: 20 },
-    button: { flex: 1, borderRadius: 12, paddingVertical: 4 },
-    rejectButton: { borderColor: '#EF4444', borderWidth: 1 }
+    buttonsContainer: { gap: 10, marginTop: 15 },
+    button: { borderRadius: 12, paddingVertical: 4, borderWidth: 1 }
 });
