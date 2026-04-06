@@ -101,7 +101,7 @@ export default function ApprovalDetailScreen() {
         <View style={styles.container}>
             <Appbar.Header style={styles.appBar} statusBarHeight={0}>
                 <Appbar.BackAction onPress={() => router.back()} color="#3E77BC" />
-                <Appbar.Content title="Panel de Gestión" titleStyle={styles.appBarTitle} />
+                <Appbar.Content title="Panel de Solicitudes" titleStyle={styles.appBarTitle} />
             </Appbar.Header>
 
             <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>

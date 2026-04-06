@@ -32,7 +32,10 @@ export default function ProfileView() {
                     />
                 </View>
                 <Text variant="headlineSmall" style={styles.userName}>{userName}</Text>
-                <Text variant="bodyMedium" style={styles.userId}>ID Empleado: FS-202501</Text>
+                <View style={styles.idBadge}>
+                    <Text variant="bodyMedium" style={styles.idText}>N° Empleado: FS-202501</Text>
+                </View>
+
             </View>
 
             {/* 2. Información Laboral: Puesto, Depto, Ingreso */}
@@ -104,7 +107,16 @@ const styles = StyleSheet.create({
     container: { flex: 1, backgroundColor: '#F9FCFF' },
     content: { padding: 25, paddingBottom: 120 },
     mainTitle: { fontWeight: '900', color: '#1E293B', marginBottom: 25, marginTop: 40 },
-
+    idBadge: {
+        backgroundColor: '#1E293B',
+        alignSelf: 'center',
+        paddingHorizontal: 16,
+        paddingVertical: 6,
+        borderRadius: 20,
+        marginBottom: 20,
+        elevation: 4,
+    },
+    idText: { color: 'white', fontSize: 11, fontWeight: 'bold', letterSpacing: 1 },
     // Header y Avatar
     header: { alignItems: 'center', marginBottom: 30 },
     avatarWrapper: {

@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { Card, Divider, Menu, Text } from 'react-native-paper';
 
-// Imports FSD
+// Imports
 import { CustomButton } from '../../src/components/ui/CustomButton';
 import { SuccessModal } from '../../src/components/ui/SuccessModal';
 import { SelectField, TextField } from '../../src/features/requests/components/FormFields';
@@ -150,6 +150,7 @@ export default function RequestsScreen() {
     return (
         <ScrollView style={styles.container} contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
             <Text variant="headlineMedium" style={styles.title}>Nueva Solicitud</Text>
+
 
             {/* SELECTOR MAESTRO DE TIPO DE SOLICITUD */}
             <View style={styles.section}>

@@ -3,25 +3,38 @@ import { Platform, StyleSheet, View } from 'react-native';
 import { Avatar, Text } from 'react-native-paper';
 
 interface HubHeaderProps {
-    userName: string;
-    role: string;
+    title?: string;
+    subtitle?: string;
+    type?: 'full' | 'compact'; // <--- El secreto de la homologación
 }
 
-export function HubHeader({ userName, role }: HubHeaderProps) {
+export function HubHeader({ title, subtitle, type = 'full' }: HubHeaderProps) {
+    const isFull = type === 'full';
+
     return (
-        <View style={styles.headerBackground}>
+        <View style={[styles.headerBackground, !isFull && styles.headerCompact]}>
             <View style={styles.headerContent}>
                 <View style={styles.textContainer}>
-                    <Text style={styles.greeting}>Hola,</Text>
-                    <Text style={styles.name}>{userName}</Text>
-                    <View style={styles.roleBadge}>
-                        <Text style={styles.roleText}>{role}</Text>
-                    </View>
+                    {isFull ? (
+                        <>
+                            <Text style={styles.greeting}>Hola,</Text>
+                            <Text style={styles.name}>{title || "Israel Merlyn"}</Text>
+                            <View style={styles.roleBadge}>
+                                <Text style={styles.roleText}>{subtitle || "Frontend Developer"}</Text>
+                            </View>
+                        </>
+                    ) : (
+                        // Versión Compacta para Formularios e Historial
+                        <View style={styles.compactRow}>
+                            <Text style={styles.compactTitle}>{title}</Text>
+                        </View>
+                    )}
                 </View>
+
+                {/* El Avatar se hace más chico en modo compacto */}
                 <Avatar.Image
-                    size={60}
+                    size={isFull ? 60 : 40}
                     source={{ uri: 'https://ui-avatars.com/api/?name=Josue+Israel&background=F9FCFF&color=3E77BC' }}
-                    style={styles.avatar}
                 />
             </View>
         </View>
@@ -30,33 +43,25 @@ export function HubHeader({ userName, role }: HubHeaderProps) {
 
 const styles = StyleSheet.create({
     headerBackground: {
-        backgroundColor: '#3E77BC', // Azul corporativo (puedes cambiarlo a naranja si prefieres el estilo de la foto)
+        backgroundColor: '#3E77BC',
         paddingTop: Platform.OS === 'ios' ? 60 : 40,
-        paddingBottom: 60, // Espacio extra para que las tarjetas suban
+        paddingBottom: 50,
         paddingHorizontal: 24,
         borderBottomLeftRadius: 40,
         borderBottomRightRadius: 40,
-        elevation: 5,
-        shadowColor: '#3E77BC',
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.3,
-        shadowRadius: 10,
     },
-    headerContent: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
+    headerCompact: {
+        paddingBottom: 30, // Mucho más corto para dejar ver el contenido
+        borderBottomLeftRadius: 30,
+        borderBottomRightRadius: 30,
     },
+    headerContent: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
     textContainer: { flex: 1 },
     greeting: { fontSize: 16, color: '#E2E8F0', opacity: 0.9 },
-    name: { fontSize: 28, fontWeight: 'bold', color: '#FFFFFF', marginBottom: 8 },
-    roleBadge: {
-        backgroundColor: 'rgba(255,255,255,0.2)',
-        alignSelf: 'flex-start',
-        paddingHorizontal: 12,
-        paddingVertical: 4,
-        borderRadius: 12,
-    },
-    roleText: { color: '#FFFFFF', fontSize: 12, fontWeight: '600' },
-    avatar: { borderWidth: 2, borderColor: '#FFFFFF' }
+    name: { fontSize: 26, fontWeight: 'bold', color: '#FFFFFF' },
+    roleBadge: { backgroundColor: 'rgba(255,255,255,0.2)', alignSelf: 'flex-start', paddingHorizontal: 10, borderRadius: 10, marginTop: 5 },
+    roleText: { color: '#FFFFFF', fontSize: 11, fontWeight: '600' },
+    // Estilos compactos
+    compactRow: { justifyContent: 'center' },
+    compactTitle: { fontSize: 20, fontWeight: 'bold', color: '#FFFFFF' }
 });

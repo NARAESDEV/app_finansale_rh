@@ -23,11 +23,11 @@ export const SuccessModal = ({ visible, onDismiss, onConfirm }: Props) => (
                 <Text variant="headlineSmall" style={styles.title}>¡Solicitud Enviada!</Text>
 
                 <Text variant="bodyMedium" style={styles.message}>
-                    ¡Excelente trabajo! Tu solicitud ya está en camino. Esperemos que te aprueben pronto para que disfrutes ese merecido descanso. 🌴✨
+                    ¡Excelente trabajo! Tu solicitud ya está en camino. Esperemos que te aprueben pronto para que disfrutes ese merecido descanso.
                 </Text>
 
                 <CustomButton
-                    title="Genial, volver al inicio"
+                    title="Volver al inicio"
                     onPress={onConfirm}
                     color="#3E77BC"
                 />
