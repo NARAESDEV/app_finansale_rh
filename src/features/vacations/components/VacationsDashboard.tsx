@@ -1,17 +1,17 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import React from 'react';
 import { ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
-// 1 y 2. Agrupamos Button y Avatar en react-native-paper
+
 import { useRouter } from 'expo-router'; // 3. Importamos el router
 import { Avatar, Button, Card, Surface, Text } from 'react-native-paper';
 
-// Asegúrate de que estas rutas sean las correctas en tu proyecto
+
 import { CircularStat } from '../../../components/ui/CircularStat';
 import { HeaderProgress } from './HeaderProgress';
 import { StatusTracker } from './StatusTracker';
 
 export const VacationsDashboard = () => {
-  const router = useRouter(); // 4. Instanciamos el router aquí
+  const router = useRouter();
 
   return (
     <ScrollView
@@ -27,7 +27,7 @@ export const VacationsDashboard = () => {
 
         {/* Resumen con Círculos*/}
         <Surface style={styles.statsSurface} elevation={2}>
-          <Text style={styles.sectionTitle}>RESUMEN DEL PERIODO</Text>
+          <Text style={styles.sectionTitle}>RESUMEN DEL PERIODO 2025-2026</Text>
           <View style={styles.statsRow}>
             <CircularStat value={14} label="DÍAS USADOS" color="#15803D" subValue="Goce" />
             <CircularStat value={10} label="PENDIENTES" color="#F47C00" subValue="Plan" />

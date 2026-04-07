@@ -1,8 +1,8 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { useRouter } from 'expo-router';
 import React from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { Badge, Card, List, Surface, Text } from 'react-native-paper';
-
 const cycles = [
     { year: '2026', status: 'NO INICIADO', statusColor: '#E0E7FF', textColor: '#4338CA', info: 'Próximo periodo disponible' },
     { year: '2025', status: 'EN CURSO', statusColor: '#DCFCE7', textColor: '#15803D', info: 'Huajuapan, Oaxaca' },
@@ -10,6 +10,7 @@ const cycles = [
 ];
 
 export default function HistoryView() {
+    const router = useRouter();
     return (
         <ScrollView style={styles.container} contentContainerStyle={styles.content}>
             <Text variant="headlineMedium" style={styles.mainTitle}>Historial de Solicitudes</Text>
@@ -18,7 +19,7 @@ export default function HistoryView() {
             <Card style={styles.accumulatedCard}>
                 <Card.Content style={{ alignItems: 'center' }}>
                     <Text style={styles.accumulatedLabel}>DÍAS ACUMULADOS</Text>
-                    <Text style={styles.accumulatedNumber}>42</Text>
+                    <Text style={styles.accumulatedNumber}>24</Text>
                     <Text style={styles.accumulatedSub}>Total disponible a la fecha</Text>
                 </Card.Content>
             </Card>
@@ -27,12 +28,12 @@ export default function HistoryView() {
             <View style={styles.statsRow}>
                 <Surface style={[styles.statBox, { backgroundColor: '#E0F2F1' }]} elevation={0}>
                     <MaterialCommunityIcons name="calendar-check" size={24} color="#15803D" />
-                    <Text style={styles.statNum}>12</Text>
+                    <Text style={styles.statNum}>14</Text>
                     <Text style={styles.statLabel}>UTILIZADOS</Text>
                 </Surface>
                 <Surface style={[styles.statBox, { backgroundColor: '#E3F2FD' }]} elevation={0}>
                     <MaterialCommunityIcons name="clock-outline" size={24} color="#3E77BC" />
-                    <Text style={styles.statNum}>30</Text>
+                    <Text style={styles.statNum}>10</Text>
                     <Text style={styles.statLabel}>PENDIENTES</Text>
                 </Surface>
             </View>
@@ -44,24 +45,30 @@ export default function HistoryView() {
             </View>
 
             {cycles.map((item, index) => (
-                <Card key={index} style={styles.cycleCard}>
-                    <List.Item
-                        title={`Ciclo ${item.year}`}
-                        description={item.info}
-                        titleStyle={{ fontWeight: 'bold' }}
-                        left={() => (
-                            <View style={styles.blueIndicator} />
-                        )}
-                        right={() => (
-                            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                <Badge style={{ backgroundColor: item.statusColor, color: item.textColor, fontWeight: '700', marginRight: 10 }}>
-                                    {item.status}
-                                </Badge>
-                                <MaterialCommunityIcons name="chevron-right" size={24} color="#CBD5E1" />
-                            </View>
-                        )}
-                    />
-                </Card>
+                <TouchableOpacity
+                    key={index}
+                    onPress={() => router.push(`/history/${item.year}`)} // <--- NAVEGACIÓN
+                    activeOpacity={0.7}
+                >
+                    <Card key={index} style={styles.cycleCard}>
+                        <List.Item
+                            title={`Ciclo ${item.year}`}
+                            description={item.info}
+                            titleStyle={{ fontWeight: 'bold' }}
+                            left={() => (
+                                <View style={styles.blueIndicator} />
+                            )}
+                            right={() => (
+                                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                    <Badge style={{ backgroundColor: item.statusColor, color: item.textColor, fontWeight: '700', marginRight: 10 }}>
+                                        {item.status}
+                                    </Badge>
+                                    <MaterialCommunityIcons name="chevron-right" size={24} color="#CBD5E1" />
+                                </View>
+                            )}
+                        />
+                    </Card>
+                </TouchableOpacity>
             ))}
 
             {/* Card Informativa: Política */}

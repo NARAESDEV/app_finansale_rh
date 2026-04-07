@@ -46,7 +46,7 @@ export const RequestDetailView = ({ id }: Props) => {
         <View style={styles.container}>
             <Appbar.Header style={styles.appBar} statusBarHeight={0}>
                 <Appbar.BackAction onPress={() => router.back()} color="#3E77BC" />
-                <Appbar.Content title="Aprobacion" titleStyle={styles.appBarTitle} />
+                <Appbar.Content title="Estado de la Solicitud" titleStyle={styles.appBarTitle} />
             </Appbar.Header>
             <ScrollView style={styles.scrollContent} contentContainerStyle={styles.content}>
 

@@ -5,41 +5,32 @@ import React, { useState } from 'react';
 import { Alert, Platform, ScrollView, StyleSheet, View } from 'react-native';
 import { Appbar, Avatar, Button, Card, Divider, Menu, Surface, Text, TextInput } from 'react-native-paper';
 
-
+// === COMPONENTES UI ===
 import { ChatFAB } from '../../src/components/ui/ChatFAB';
 import { ProcessTimeline, TimelineStepType } from '../../src/components/ui/ProcessTimeline';
 import { InfoItem } from '../../src/features/approvals/components/InfoItem';
 import { ReassignModal } from '../../src/features/approvals/components/ReassignModal';
 import { NotesChatModal } from '../../src/features/vacations/components/NotesChatModal';
 
-
-//ESTADOS ACTUALIZADO (Con estado "Pendiente")
-
+// ==========================================
+// 1. MOTOR DE ESTADOS (Workflow Definido)
+// ==========================================
 const WORKFLOWS = {
     VACACIONES: {
-        borrador: [
-            { target: 'asignado', label: 'Asignar a Usuario', icon: 'account-arrow-right', color: '#3E77BC', requiresUser: true, requiresReason: false },
-            { target: 'peticion_autorizacion', label: 'Petición de Autorización', icon: 'send-clock', color: '#F59E0B', requiresUser: false, requiresReason: false }
-        ],
-        asignado: [
-            { target: 'en_curso', label: 'En Curso', icon: 'play-circle', color: '#8B5CF6', requiresUser: false, requiresReason: false }
+        solicitud_enviada: [
+            { target: 'peticion_autorizacion', label: 'Enviar a Autorización', icon: 'send-check', color: '#3E77BC', requiresUser: false, requiresReason: false },
+            { target: 'reasignado', label: 'Reasignar a otro Jefe', icon: 'account-arrow-right', color: '#8B5CF6', requiresUser: true, requiresReason: false }
         ],
         peticion_autorizacion: [
-            { target: 'en_curso', label: 'En Curso', icon: 'play-circle', color: '#8B5CF6', requiresUser: false, requiresReason: false },
-            { target: 'rechazado', label: 'Rechazar Solicitud', icon: 'close-circle-outline', color: '#EF4444', requiresUser: false, requiresReason: true },
-            { target: 'cancelado', label: 'Cancelar Solicitud', icon: 'cancel', color: '#64748B', requiresUser: false, requiresReason: true },
-            { target: 'cerrado', label: 'Cerrar Expediente', icon: 'lock', color: '#1E293B', requiresUser: false, requiresReason: false }
+            { target: 'aprobado', label: 'Aprobar', icon: 'check-decagram', color: '#10B981', requiresUser: false, requiresReason: false },
+            { target: 'rechazado', label: 'Rechazar', icon: 'close-circle', color: '#EF4444', requiresUser: false, requiresReason: true },
+            { target: 'cancelado', label: 'Cancelar', icon: 'cancel', color: '#64748B', requiresUser: false, requiresReason: true }
         ],
-        en_curso: [
-            { target: 'aprobado', label: 'Aprobar Vacaciones', icon: 'check-decagram', color: '#10B981', requiresUser: false, requiresReason: false },
-            { target: 'pendiente', label: 'Poner en Pendiente (Pausa)', icon: 'pause-circle-outline', color: '#F59E0B', requiresUser: false, requiresReason: true } // Nueva opción
+        reasignado: [
+            { target: 'aprobado', label: 'Aprobar', icon: 'check-decagram', color: '#10B981', requiresUser: false, requiresReason: false },
+            { target: 'rechazado', label: 'Rechazar', icon: 'close-circle', color: '#EF4444', requiresUser: false, requiresReason: true }
         ],
-        pendiente: [
-            { target: 'en_curso', label: 'Reactivar (En Curso)', icon: 'play-circle-outline', color: '#8B5CF6', requiresUser: false, requiresReason: false },
-            { target: 'rechazado', label: 'Rechazar Definitivamente', icon: 'close-circle-outline', color: '#EF4444', requiresUser: false, requiresReason: true },
-            { target: 'cancelado', label: 'Cancelar Solicitud', icon: 'cancel', color: '#64748B', requiresUser: false, requiresReason: true }
-        ],
-        aprobado: [], rechazado: [], cancelado: [], cerrado: []
+        aprobado: [], rechazado: [], cancelado: []
     }
 };
 
@@ -54,9 +45,13 @@ export default function ApprovalDetailScreen() {
     const { id } = useLocalSearchParams();
     const router = useRouter();
 
-    const [currentStatus, setCurrentStatus] = useState('borrador');
+    // --- ESTADO INICIAL: Petición de Autorización ---
+    const [currentStatus, setCurrentStatus] = useState('peticion_autorizacion');
+
+    // El historial ahora muestra el envío completado y la petición como paso actual
     const [history, setHistory] = useState<TimelineStepType[]>([
-        { id: 'hist-1', title: 'Borrador', desc: 'Solicitud iniciada por Fernanda.', status: 'current', icon: 'file-document-edit-outline', color: '#64748B' }
+        { id: 'hist-1', title: 'Enviado', desc: 'Solicitud iniciada por Fernanda.', status: 'completed', icon: 'send', color: '#64748B' },
+        { id: 'hist-2', title: 'Petición de Autorización', desc: 'Esperando resolución de Jefatura.', status: 'current', icon: 'send-clock', color: '#3E77BC' }
     ]);
 
     const [isMenuVisible, setIsMenuVisible] = useState(false);
@@ -101,11 +96,12 @@ export default function ApprovalDetailScreen() {
         <View style={styles.container}>
             <Appbar.Header style={styles.appBar} statusBarHeight={0}>
                 <Appbar.BackAction onPress={() => router.back()} color="#3E77BC" />
-                <Appbar.Content title="Panel de Solicitudes" titleStyle={styles.appBarTitle} />
+                <Appbar.Content title="Gestión de Solicitud" titleStyle={styles.appBarTitle} />
             </Appbar.Header>
 
             <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
 
+                {/* INFO DEL EMPLEADO */}
                 <Card style={styles.employeeCard} elevation={2}>
                     <Card.Content style={styles.employeeHeader}>
                         <Avatar.Image size={60} source={{ uri: initialData.employee.avatar }} />
@@ -124,11 +120,14 @@ export default function ApprovalDetailScreen() {
                     </Card.Content>
                 </Card>
 
-                <ProcessTimeline title="ESTADO DE PROCESO" steps={history} />
+                {/* ESTADO DE PROCESO (Timeline Actualizado) */}
+                <ProcessTimeline title="FLUJO DE TRABAJO" steps={history} />
 
+                {/* ACCIÓN REQUERIDA (Menu con Aprobar/Rechazar) */}
+                {/* ACCIÓN REQUERIDA (Menu con Aprobar/Rechazar y Motivo) */}
                 {availableTransitions.length > 0 && (
                     <Surface style={styles.actionPanel} elevation={1}>
-                        <Text style={styles.panelTitle}>Acción Requerida (Estado: {currentStatus.toUpperCase()})</Text>
+                        <Text style={styles.panelTitle}>Resolución de Solicitud ({currentStatus.replace('_', ' ').toUpperCase()})</Text>
 
                         <Menu
                             visible={isMenuVisible}
@@ -142,31 +141,38 @@ export default function ApprovalDetailScreen() {
                                     textColor={selectedTransition ? selectedTransition.color : '#64748B'}
                                     icon="chevron-down"
                                 >
-                                    {selectedTransition ? selectedTransition.label : 'Elegir siguiente paso...'}
+                                    {selectedTransition ? selectedTransition.label : 'Seleccionar Acción...'}
                                 </Button>
                             }
                         >
                             {availableTransitions.map((t) => (
                                 <Menu.Item
                                     key={t.target}
-                                    onPress={() => { setSelectedTransition(t); setIsMenuVisible(false); setReasonError(''); }}
+                                    onPress={() => {
+                                        setSelectedTransition(t);
+                                        setIsMenuVisible(false);
+                                        setReasonError(''); // Limpiamos errores previos al cambiar de opción
+                                    }}
                                     title={t.label}
                                     leadingIcon={t.icon}
+                                    titleStyle={{ color: t.color, fontWeight: 'bold' }}
                                 />
                             ))}
                         </Menu>
 
-                        {selectedTransition?.requiresReason && (
+                        {/* EL CAMPO DE MOTIVO APARECE SIEMPRE QUE HAYA UNA OPCIÓN SELECCIONADA */}
+                        {selectedTransition && (
                             <View style={styles.reasonContainer}>
                                 <TextInput
                                     mode="outlined"
-                                    label="Justificación del movimiento"
+                                    label={selectedTransition.requiresReason ? "Motivo de cambio (Obligatorio)*" : "Motivo de cambio (Opcional)"}
                                     value={reasonText}
                                     onChangeText={(text) => { setReasonText(text); setReasonError(''); }}
                                     multiline
                                     numberOfLines={2}
                                     error={!!reasonError}
                                     style={styles.input}
+                                    activeOutlineColor={selectedTransition.color} // El borde toma el color de la acción (Verde, Rojo, etc)
                                 />
                                 {reasonError ? <Text style={styles.errorText}>{reasonError}</Text> : null}
                             </View>
@@ -178,7 +184,7 @@ export default function ApprovalDetailScreen() {
                             onPress={() => selectedTransition?.requiresUser ? setIsUserModalVisible(true) : confirmTransition()}
                             style={[styles.applyButton, selectedTransition && { backgroundColor: selectedTransition.color }]}
                         >
-                            {selectedTransition?.requiresUser ? 'Asignar y Aplicar' : 'Confirmar Movimiento'}
+                            {selectedTransition?.label ? `Confirmar ${selectedTransition.label}` : 'Confirmar Movimiento'}
                         </Button>
                     </Surface>
                 )}
@@ -198,6 +204,7 @@ export default function ApprovalDetailScreen() {
     );
 }
 
+// === ESTILOS ===
 const styles = StyleSheet.create({
     container: { flex: 1, backgroundColor: '#F9FCFF' },
     appBar: { backgroundColor: 'white', elevation: 2, paddingTop: Platform.OS === 'android' ? 40 : 50, height: Platform.OS === 'android' ? 100 : 110 },
@@ -211,7 +218,7 @@ const styles = StyleSheet.create({
     requestDetails: { paddingVertical: 20, gap: 16 },
     row: { flexDirection: 'row', justifyContent: 'space-between', gap: 16 },
     actionPanel: { backgroundColor: 'white', padding: 20, borderRadius: 20, borderWidth: 1, borderColor: '#E2E8F0', marginTop: 20, marginBottom: 40 },
-    panelTitle: { fontSize: 14, fontWeight: '800', color: '#1E293B', marginBottom: 15 },
+    panelTitle: { fontSize: 13, fontWeight: '800', color: '#64748B', marginBottom: 15, textTransform: 'uppercase', letterSpacing: 0.5 },
     selectButton: { borderRadius: 12, borderColor: '#CBD5E1', marginBottom: 15, backgroundColor: '#F8FAFC' },
     selectButtonContent: { flexDirection: 'row-reverse', justifyContent: 'space-between', height: 48 },
     reasonContainer: { marginBottom: 15 },

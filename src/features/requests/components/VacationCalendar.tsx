@@ -68,7 +68,7 @@ export const VacationCalendar = ({ mode = 'range', onDateChange }: CalendarProps
 };
 
 const styles = StyleSheet.create({
-    container: { marginTop: 25 },
+    container: { marginTop: 2, marginBottom: 20, },
     label: { fontSize: 13, fontWeight: '700', color: '#64748B', marginBottom: 12, textTransform: 'uppercase' },
-    calendarShadow: { borderRadius: 20, elevation: 3, padding: 10, backgroundColor: 'white' }
+    calendarShadow: { borderRadius: 20, elevation: 3, padding: 10, backgroundColor: 'white', borderWidth: 1, borderColor: '#F1F5F9' }
 });
